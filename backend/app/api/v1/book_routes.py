@@ -31,6 +31,7 @@ def create_book():
     if book_id:
         # Fetch the created book to return in the response
         created_book = BookService.get_book(book_id)
+        print(created_book)
         return jsonify({"status": "success", "data": created_book}), 201 # 201 Created
     else:
         # Service returns None on database error
@@ -130,4 +131,5 @@ def search_books():
         books = BookService.search_books(query)
         return jsonify({"status": "success", "data": books}), 200
     except Exception as e:
+        print(e)
         return jsonify({"status": "error", "message": str(e)}), 500

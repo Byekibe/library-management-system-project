@@ -18,10 +18,12 @@ def create_member():
         return jsonify({"status": "error", "message": "Missing required field: name"}), 400
 
     member_id = MemberService.create_member(name, email, phone)
+    print(member_id)
 
     if member_id:
         # Fetch the created member to return
         created_member = MemberService.get_member(member_id)
+        print(f"Created member: {created_member}")
         return jsonify({"status": "success", "data": created_member}), 201 # 201 Created
     else:
         # Service returns None on database error or if email unique constraint fails
@@ -108,3 +110,46 @@ def get_member_debt(member_id):
              return jsonify({"status": "error", "message": "Member not found"}), 404
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
+    
+
+@api_v1_bp.route("/members/<int:member_id>/payment", methods=["POST"])
+def record_member_payment(member_id):
+    """
+    Records a payment for a member, reducing their outstanding debt.
+    Expects JSON body with 'amount': float.
+    """
+    # Ensure the request body is JSON
+    if not request.is_json:
+        return jsonify({"status": "error", "message": "Request must be JSON"}), 415 # Unsupported Media Type
+
+    data = request.get_json()
+    amount = data.get("amount")
+
+    # Basic validation for the presence and type of amount
+    if amount is None:
+        return jsonify({"status": "error", "message": "'amount' is required in the request body"}), 400
+    try:
+        # Convert amount to float and validate it's a number
+        amount = float(amount)
+    except (ValueError, TypeError):
+         return jsonify({"status": "error", "message": "'amount' must be a valid number"}), 400
+
+    # Call the service method to record the payment
+    success, message = MemberService.record_payment(member_id, amount)
+
+    if success:
+        # On success, return a 200 OK response with the success message
+        return jsonify({"status": "success", "message": message}), 200
+    else:
+        # On failure, determine the appropriate status code based on the message
+        # If the message indicates a client-side issue (like invalid amount or member not found), use 4xx
+        # Otherwise, default to 500 for server-side errors
+        status_code = 400 # Default to Bad Request for client-side issues
+        if "Member with ID" in message and "not found" in message:
+             status_code = 404 # Not Found if member doesn't exist
+        elif "positive" in message and "amount" in message:
+             status_code = 400 # Bad Request for invalid amount
+        else:
+             status_code = 500 # Internal Server Error for unexpected issues
+
+        return jsonify({"status": "error", "message": message}), status_code

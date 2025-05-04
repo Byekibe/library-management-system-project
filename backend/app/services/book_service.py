@@ -37,17 +37,14 @@ class BookService:
         SELECT id, title, author, isbn, total_stock, available_stock
         FROM books WHERE id = :book_id
         """)
-        result = db.session.execute(sql, {'book_id': book_id}).fetchone()
+        result = db.session.execute(sql, {'book_id': book_id}).mappings().fetchone()
         return dict(result) if result else None
 
     @staticmethod
     def get_all_books():
         """Retrieves all books."""
-        sql = text("""
-        SELECT id, title, author, isbn, total_stock, available_stock
-        FROM books
-        """)
-        results = db.session.execute(sql).fetchall()
+        sql = text("SELECT id, title, author, isbn, total_stock, available_stock FROM books")
+        results = db.session.execute(sql).mappings().fetchall()
         return [dict(row) for row in results]
 
     @staticmethod
@@ -117,5 +114,5 @@ class BookService:
         WHERE title LIKE :query OR author LIKE :query
         """)
         search_term = f"%{query}%"
-        results = db.session.execute(sql, {'query': search_term}).fetchall()
+        results = db.session.execute(sql, {'query': search_term}).mappings().fetchall()
         return [dict(row) for row in results]
