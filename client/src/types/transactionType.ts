@@ -21,5 +21,3 @@ export interface Transaction {
     message?: string;
   }
   
-
-  

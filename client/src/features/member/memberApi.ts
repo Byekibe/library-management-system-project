@@ -1,6 +1,6 @@
   // src/services/memberApi.ts
   import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-  import { Member, CreateMemberRequest, UpdateMemberRequest, MemberDebt, ApiResponse } from '@/types/memberTypes';
+  import { Member, CreateMemberRequest, UpdateMemberRequest, MemberDebt, ApiResponse, RecordPaymentRequest, RecordPaymentResponse } from '@/types/memberTypes';
 
   const baseUrl = import.meta.env.VITE_BASE_URL;
   
@@ -75,6 +75,30 @@
           { type: 'MemberDebt', id }
         ],
       }),
+
+          // --- New Mutation: recordPayment ---
+      recordPayment: builder.mutation<RecordPaymentResponse, RecordPaymentRequest>({
+        query: ({ memberId, amount }) => ({
+          url: `/members/${memberId}/payment`, // Matches your Flask route URL
+          method: 'POST', // Matches your Flask route method
+          body: { amount: amount }, // Send the amount in the request body as JSON
+          // headers: { 'Content-Type': 'application/json' }, // fetchBaseQuery sets this automatically
+        }),
+        // Define which tags to invalidate upon successful payment
+        invalidatesTags: (_result, error, { memberId }) => {
+          // Only invalidate if the mutation was successful (error is undefined)
+          if (error) {
+            return []; // Don't invalidate on error
+          }
+          return [
+            { type: 'Member', id: memberId }, // Invalidate the specific member's data
+            { type: 'MemberDebt', id: memberId }, // Invalidate the specific member's debt data
+            { type: 'Member', id: 'LIST' }, // Optional: Invalidate the members list if it shows debt
+            // Add other tags if necessary
+          ];
+        },
+      }),
+
     }),
   });
   
@@ -86,4 +110,5 @@
     useUpdateMemberMutation,
     useDeleteMemberMutation,
     useGetMemberDebtQuery,
+    useRecordPaymentMutation,
   } = memberApi;

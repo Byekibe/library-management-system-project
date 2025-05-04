@@ -29,4 +29,15 @@ export interface Member {
     data?: T;
     message?: string;
   }
+
+  // Define the types for the mutation request and response
+export interface RecordPaymentRequest {
+  memberId: number;
+  amount: number;
+}
   
+export interface RecordPaymentResponse {
+  message: string; // Based on your Flask route's success response
+  // Your backend might return updated member data here as well
+  // data?: Member; // Example if backend returns updated member
+}
