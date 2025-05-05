@@ -6,6 +6,8 @@ A robust, full-stack web application built with a **Flask RESTful API** backend 
 
 This project is structured with clear separation of concerns, supporting scalable development and easy maintenance.
 
+> 📺 **Live preview:** [https://kazihub.co.ke](https://kazihub.co.ke)
+
 ---
 
 ## 🌟 Features
@@ -19,6 +21,10 @@ This project is structured with clear separation of concerns, supporting scalabl
 ✅ Full CRUD for users resource
 ✅ Testing setup with pytest
 
+📄 **Backend README:** [View here](https://github.com/Byekibe/library-management-system-project/blob/main/backend/README.md)
+
+---
+
 ### Frontend (React)
 
 ✅ TypeScript + React app
@@ -27,6 +33,8 @@ This project is structured with clear separation of concerns, supporting scalabl
 ✅ Modern UI patterns, reusable components
 ✅ React Router for client-side routing
 ✅ State management using React hooks (or add Zustand/Redux if needed)
+
+📄 **Frontend README:** [View here](https://github.com/Byekibe/library-management-system-project/blob/main/client/README.md)
 
 ---
 
@@ -47,6 +55,14 @@ root/
     ├── package.json
     └── tsconfig.json
 ```
+
+Would you like me to also make the backend and frontend READMEs **relative links** (for when browsing directly in the repo)?
+
+
+📄 **Detailed README for each folder:**
+
+* [Backend README](https://github.com/Byekibe/library-management-system-project/blob/main/backend/README.md)
+* [Frontend README](https://github.com/Byekibe/library-management-system-project/blob/main/client/README.md)
 
 ---
 
@@ -189,37 +205,49 @@ Example Users resource:
 
 ## 🌍 Deployment
 
+This project is deployed and live at: **[https://kazihub.co.ke](https://kazihub.co.ke)**
+
 ### Backend (Production)
 
 1. Update `.env`:
 
    ```
-FLASK_APP=run.py
-FLASK_ENV=development
-SECRET_KEY=your-secret-key-for-development
-# DATABASE_URL=postgresql+psycopg2://username:password@host:port/database_name
-# Uncomment the following line if you want to use MySQL instead of PostgreSQL
-DATABASE_URL=mysql+pymysql://user:password@host:port/database_name
    ```
+
+FLASK\_APP=run.py
+FLASK\_ENV=development
+SECRET\_KEY=your-secret-key-for-development
+
+# DATABASE\_URL=postgresql+psycopg2://username\:password\@host\:port/database\_name
+
+# Uncomment the following line if you want to use MySQL instead of PostgreSQL
+
+DATABASE\_URL=mysql+pymysql://user\:password\@host\:port/database\_name
+
+```
 
 2. Run with Gunicorn:
 
-   ```
-   gunicorn "app:create_app('production')" --bind 0.0.0.0:8000
-   ```
+```
+
+gunicorn "app\:create\_app('production')" --bind 0.0.0.0:8000
+
+```
 
 ### Frontend (Production)
 
 1. Build static files:
 
-   ```
-   npm run build
-   ```
+```
+
+npm run build
+
+```
 
 2. Serve with:
 
-   * Vercel, Netlify, or static file host
-   * Or serve alongside backend using a reverse proxy (e.g., Nginx)
+* Vercel, Netlify, or static file host  
+* Or serve alongside backend using a reverse proxy (e.g., Nginx)
 
 ---
 
@@ -239,4 +267,3 @@ DATABASE_URL=mysql+pymysql://user:password@host:port/database_name
 
 This project is licensed under the [MIT License](LICENSE).
 
----
