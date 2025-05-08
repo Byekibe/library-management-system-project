@@ -103,7 +103,11 @@ Would you like me to also make the backend and frontend READMEs **relative links
    cp .env.example .env
    ```
 
-5. Initialize the database:
+5. Create a database depending on the connecting string - mysql or postgres - in the .env file
+   ```
+   Set the connection string (MySQL or PostgreSQL) in .env, then create the database manually using your database tool.
+   ```
+6. Initialize the database:
 
    ```
    flask db init
@@ -111,7 +115,7 @@ Would you like me to also make the backend and frontend READMEs **relative links
    flask db upgrade
    ```
 
-6. Run the API:
+7. Run the API:
 
    ```
    python3 run.py
@@ -230,7 +234,8 @@ DATABASE\_URL=mysql+pymysql://user\:password\@host\:port/database\_name
 
 ```
 
-gunicorn "app\:create\_app('production')" --bind 0.0.0.0:8000
+gunicorn run:app --bind 0.0.0.0:5000 --workers 3
+
 
 ```
 
